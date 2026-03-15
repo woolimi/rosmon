@@ -1,0 +1,47 @@
+{
+  "name": "rosmon",
+  "version": "0.1.0",
+  "description": "ROS2 monitoring web dashboard — real-time dashboard for nodes, topics, services (rosmon_bridge)",
+  "scripts": {
+    "dev": "bash scripts/dev-with-ros.sh",
+    "dev:web": "vite",
+    "dev:ros": "bash scripts/launch-rosmon-bridge.sh",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [
+    "ros2",
+    "monitoring",
+    "dashboard",
+    "rosmon_bridge"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@dagrejs/dagre": "^2.0.4",
+    "@radix-ui/react-dialog": "^1.1.2",
+    "@radix-ui/react-popover": "^1.1.15",
+    "@radix-ui/react-slot": "^1.1.0",
+    "@xyflow/react": "^12.10.1",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.460.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.28.0",
+    "recharts": "^2.13.3",
+    "tailwind-merge": "^2.5.4"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.3",
+    "autoprefixer": "^10.4.20",
+    "concurrently": "^9.1.0",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.14",
+    "tailwindcss-animate": "^1.0.7",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.10"
+  }
+}
