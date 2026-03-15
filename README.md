@@ -1,12 +1,13 @@
 # rosmon
 
-**ROS2 topology graph web app** — nodes, topics, services, and actions via **rosmon_bridge**.  
-*ROS2 토폴로지 그래프 웹 앱: 노드·토픽·서비스·액션 연결 시각화.*
+**ROS2 topology graph web app** — nodes, topics, services, and actions via **rosmon_bridge**.
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![ROS2](https://img.shields.io/badge/ROS%202-Jazzy-orange)](https://docs.ros.org/)
 
 ---
+
+![demo](/docs/demo.gif)
 
 ## Overview
 
@@ -14,14 +15,17 @@
 
 ## Features
 
-- **Topic, service, action** — View in topology and inspect (interface definition, copy CLI).
-- **Publish** — Publish messages to topics from the UI.
-- **Request** — Call services (send request, see response).
-- **Feedback** — Send action goals and observe feedback stream in real time.
+- Topology visualization: Visualize the relationships between nodes, topics, services, and actions using a custom bridge socket server (rosmon_bridge).
+
+- Topic publish: Inspect the topic interface and publish test messages directly from the UI.
+
+- Service request: Send requests and inspect responses for services.
+
+- Action feedback: Send goals, observe the feedback stream in real time, and check the final result.
 
 ## Prerequisites
 
-- **Node.js** — LTS (v22+), see [.nvmrc](.nvmrc) if using nvm
+- **Node.js** — LTS (v22+)
 - **ROS2** — Jazzy (rosmon_bridge).
 - **Browser** — modern browser (Chrome, Firefox, Edge) with WebSocket support
 
@@ -29,7 +33,14 @@
 
 Install [nvm](https://github.com/nvm-sh/nvm) before start. 
 
-1. Install **Node** from nvm
+0. Clone repository
+
+```bash
+git clone git@github.com:woolimi/rosmon.git
+cd rosmon
+```
+
+1. Install recommended version of **Node** from nvm
 
 ```bash
 nvm install
@@ -44,12 +55,13 @@ npm install
 3. **Activate ROS2 environment** and Python dependencies for rosmon_bridge:
 
 ```bash
-source /opt/ros/jazzy/setup.bash   # or your ROS_DISTRO (e.g. humble)
+source /opt/ros/$ROS_DISTRO/setup.bash
 
-# Install rclpy
-sudo apt install ros-$ROS_DISTRO-rclpy
+# Activate a Python environment depending on your setup
+# Example:
+#   conda activate ros
+#   source ~/venv/ros/bin/activate
 
-# Activate your python env then,
 pip install -r requirements.txt
 ```
 
@@ -58,7 +70,10 @@ pip install -r requirements.txt
 ```bash
 npm run dev
 ```
-Open `http://localhost:5173`. The app connects to `ws://localhost:9090` by default.
+
+This command starts both the Vite development server and the rosmon_bridge socket server.
+
+Open http://localhost:5173. The app connects to ws://localhost:9090 by default.
 
 ## Contributing
 
