@@ -22,6 +22,11 @@ function isRclInterfacesService(type: string): boolean {
   return type.trim().startsWith('rcl_interfaces/');
 }
 
+/** type_description_interfaces 패키지 서비스(GetTypeDescription 등 인트로스펙션용)는 그래프에서 제외 */
+function isTypeDescriptionInterfacesService(type: string): boolean {
+  return type.trim().startsWith('type_description_interfaces/');
+}
+
 export interface GraphVisibility {
   topics: boolean;
   services: boolean;
@@ -120,14 +125,17 @@ export function buildTopologyGraph(
     });
   }
 
-  // Service 노드 (전체 services) + Service → Node (server) — _action 하위 서비스(get_result), rcl_interfaces 제외
+  // Service 노드 (전체 services) + Service → Node (server) — _action 하위 서비스(get_result), rcl_interfaces·type_description_interfaces 제외
   if (showServices) {
     services
       .filter((name) => !isActionSubResource(name))
       .filter((name) => {
         const typeIdx = services.indexOf(name);
         const srvType = typeIdx >= 0 ? serviceTypes[typeIdx] ?? '' : '';
-        return !isRclInterfacesService(srvType);
+        return (
+          !isRclInterfacesService(srvType) &&
+          !isTypeDescriptionInterfacesService(srvType)
+        );
       })
       .forEach((serviceName) => {
       const srvId = `service:${serviceName}`;
