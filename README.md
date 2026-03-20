@@ -36,7 +36,7 @@ Install [nvm](https://github.com/nvm-sh/nvm) before start.
 0. Clone repository
 
 ```bash
-git clone git@github.com:woolimi/rosmon.git
+git clone https://github.com/woolimi/rosmon.git
 cd rosmon
 ```
 
