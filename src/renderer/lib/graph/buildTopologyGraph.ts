@@ -4,6 +4,9 @@ import { MarkerType, Position } from '@xyflow/react';
 /** Dagre가 위치를 계산하므로 초기 position은 placeholder */
 const PLACEHOLDER_POSITION = { x: 0, y: 0 };
 
+/** 네임스페이스 그룹 프레임보다 위(ROS 노드가 가려지지 않도록) */
+const Z_GRAPH_FOREGROUND = 2;
+
 /** 액션 노드에 이미 표시되므로 그래프에서 제외할 _action 하위 5개 (토픽/서비스 공통) */
 const ACTION_SUB_SUFFIXES = [
   '/_action/send_goal',
@@ -65,6 +68,7 @@ export function buildTopologyGraph(
     data: { label: name },
     sourcePosition: Position.Right,
     targetPosition: Position.Left,
+    zIndex: Z_GRAPH_FOREGROUND,
   }));
 
   const edgeList: Edge[] = [];
@@ -93,6 +97,7 @@ export function buildTopologyGraph(
         },
         sourcePosition: Position.Right,
         targetPosition: Position.Left,
+        zIndex: Z_GRAPH_FOREGROUND,
       });
       publishers
         .filter((pub) => nodes.includes(pub))
@@ -155,6 +160,7 @@ export function buildTopologyGraph(
         },
         sourcePosition: Position.Right,
         targetPosition: Position.Left,
+        zIndex: Z_GRAPH_FOREGROUND,
       });
       if (providerNode && nodes.includes(providerNode)) {
         edgeList.push({
@@ -191,6 +197,7 @@ export function buildTopologyGraph(
         },
         sourcePosition: Position.Right,
         targetPosition: Position.Left,
+        zIndex: Z_GRAPH_FOREGROUND,
       });
       clientNodes
         .filter((client) => nodes.includes(client))

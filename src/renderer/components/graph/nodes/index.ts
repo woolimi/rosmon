@@ -6,3 +6,5 @@ export { RosServiceNode } from './RosServiceNode';
 export type { RosServiceNodeData } from './RosServiceNode';
 export { RosActionNode } from './RosActionNode';
 export type { RosActionNodeData } from './RosActionNode';
+export { RosNamespaceGroupNode } from './RosNamespaceGroupNode';
+export type { RosNamespaceGroupData } from './RosNamespaceGroupNode';

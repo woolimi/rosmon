@@ -1,12 +1,14 @@
 import { Handle, Position, type Node, type NodeProps } from '@xyflow/react';
+import { ROS_ACTION_SUB_LABELS } from '@/lib/graph/rosActionSubPaths';
+import { GRAPH_RESOURCE_NODE_MAX_WIDTH_PX } from '@/lib/graph/graphNodeLayout';
 
 /** ROS2 action 내부 채널 5개: srv=에메랄드(chart-3), topic=보라(chart-1) */
 const ACTION_SUB_ITEMS = [
-  { key: 'send_goal', label: '_action/send_goal', kind: 'service' as const },
-  { key: 'cancel_goal', label: '_action/cancel_goal', kind: 'service' as const },
-  { key: 'status', label: '_action/status', kind: 'topic' as const },
-  { key: 'feedback', label: '_action/feedback', kind: 'topic' as const },
-  { key: 'get_result', label: '_action/get_result', kind: 'service' as const },
+  { key: 'send_goal', label: ROS_ACTION_SUB_LABELS[0], kind: 'service' as const },
+  { key: 'cancel_goal', label: ROS_ACTION_SUB_LABELS[1], kind: 'service' as const },
+  { key: 'status', label: ROS_ACTION_SUB_LABELS[2], kind: 'topic' as const },
+  { key: 'feedback', label: ROS_ACTION_SUB_LABELS[3], kind: 'topic' as const },
+  { key: 'get_result', label: ROS_ACTION_SUB_LABELS[4], kind: 'service' as const },
 ] as const;
 
 export type RosActionNodeData = {
@@ -27,12 +29,14 @@ export function RosActionNode({
   const { label, actionType } = data;
   return (
     <div
-      className="relative rounded-lg flex flex-col items-stretch px-2.5 py-1.5 min-w-[100px] border-2 shadow-sm gap-1"
+      className="relative rounded-lg flex flex-col items-stretch px-2.5 py-1.5 min-w-[100px] max-w-full w-full overflow-hidden border-2 shadow-sm gap-1"
       style={{
+        maxWidth: GRAPH_RESOURCE_NODE_MAX_WIDTH_PX,
         background: 'hsl(var(--chart-4) / 0.5)',
         borderColor: 'hsl(var(--chart-4))',
         boxShadow: selected ? '0 0 0 2px hsl(var(--foreground) / 0.6)' : undefined,
       }}
+      title={label}
     >
       <Handle type="source" id="left" position={Position.Left} className="!w-2 !h-2 !border-0 !bg-transparent !opacity-0 pointer-events-none !-left-[4px]" />
       <Handle type="source" id="right" position={Position.Right} className="!w-2 !h-2 !border-0 !bg-transparent !opacity-0 pointer-events-none !-right-[4px]" />
@@ -44,7 +48,7 @@ export function RosActionNode({
       <Handle type="target" id="bottom" position={Position.Bottom} className="!w-2 !h-2 !border-0 !bg-transparent !opacity-0 pointer-events-none !-bottom-[4px]" />
 
       {/* 액션 이름 */}
-      <span className="text-foreground font-medium text-[10px] text-center break-all leading-tight">
+      <span className="text-foreground font-medium text-[10px] text-center truncate min-w-0">
         {label}
       </span>
       {actionType && (

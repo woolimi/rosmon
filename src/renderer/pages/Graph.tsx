@@ -23,8 +23,14 @@ import {
   RosTopicNode,
   RosServiceNode,
   RosActionNode,
+  RosNamespaceGroupNode,
 } from '@/components/graph/nodes';
-import { getLayoutedElements, assignEdgeHandles } from '@/lib/dagreLayout';
+import {
+  getLayoutedElements,
+  assignEdgeHandles,
+  applyNamespaceGrouping,
+  resolveGraphNodeOverlaps,
+} from '@/lib/dagreLayout';
 import { buildTopologyGraph, type GraphVisibility } from '@/lib/graph/buildTopologyGraph';
 import { ROSMON_BRIDGE_WS_URL } from '@/lib/ros';
 import { GraphVisibilityControls } from '@/components/graph/GraphVisibilityControls';
@@ -43,6 +49,7 @@ const nodeTypes = {
   rosTopic: RosTopicNode,
   rosService: RosServiceNode,
   rosAction: RosActionNode,
+  rosNamespaceGroup: RosNamespaceGroupNode,
 };
 
 export function Graph() {
@@ -91,7 +98,18 @@ export function Graph() {
       actionToClients,
       visibility
     );
-    return getLayoutedElements(rawNodes, rawEdges, 'LR');
+    const { nodes: laidOut, edges: laidOutEdges } = getLayoutedElements(
+      rawNodes,
+      rawEdges,
+      'LR'
+    );
+    const groupedNodes = resolveGraphNodeOverlaps(
+      applyNamespaceGrouping(laidOut, laidOutEdges)
+    );
+    return {
+      nodes: groupedNodes,
+      edges: assignEdgeHandles(groupedNodes, laidOutEdges),
+    };
   }, [
     nodes,
     topicConnections,
@@ -177,6 +195,9 @@ export function Graph() {
         setSelectedNodeName(null);
         return;
       }
+      if (node.type === 'rosNamespaceGroup') {
+        return;
+      }
       if (node.type === 'rosNode' && data?.label) {
         setSelectedNodeName(data.label);
         setSelectedDetail(null);
@@ -251,7 +272,11 @@ export function Graph() {
             />
             <Controls position="bottom-left" />
             <MiniMap
-              nodeColor="hsl(var(--chart-1))"
+              nodeColor={(n) =>
+                n.type === 'rosNamespaceGroup'
+                  ? 'hsl(var(--muted) / 0.72)'
+                  : 'hsl(var(--chart-1))'
+              }
               maskColor="hsl(var(--background) / 0.8)"
               className="!bg-card !border-border"
             />
